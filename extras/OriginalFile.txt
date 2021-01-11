@@ -1,0 +1,105 @@
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main(int argc, char **argv) {
+    
+    pid_t pid;
+
+        /*read the file name from command line*/
+        FILE *fp;
+        fp = fopen(argv[1], "r");
+
+        /*check if file was opened properly*/
+        if(fp == NULL) {
+            perror("Error opening file");
+            return(-1);
+        }
+
+        /*create a dynamically allocated array*/
+        char* p_array[100];
+        for (int i=0; i<100; i++) 
+            p_array[i] = malloc(sizeof(char) *  1000);
+        
+
+        /*check if malloc failed*/
+        if(p_array == NULL){
+            printf("Malloc failed");
+            exit(1);
+        }
+
+        /*read the contents of the file*/
+        int c;
+        int x = 0;
+        int y = 0;
+        if (fp) {
+            while((c = getc(fp)) != EOF) {
+                while((c = getc(fp)) != '\n') {
+                    p_array[y][x] = c;
+                    x ++;
+                }
+                y++;
+            }
+        }
+        printf("%s\n", p_array);
+
+        /*close the file*/
+        fclose(fp);
+
+        /*print the contents of the array*/
+        for(int i = 0; i < 1000; i++) {
+            /*printf("%c", p_array[i]);*/
+        }
+    
+        /* fork a child process */
+        pid = fork ();
+        
+        if (pid < 0) { /* error occurred */
+            fprintf(stderr, "Fork Failed");
+        return 1;
+        }
+
+        else if (pid == 0) { /* child process */
+            /*execvp(*p_array[0], p_array);*/
+        }
+
+        else { /* parent process */
+            /* parent will wait for the child to complete */
+            wait(NULL);
+            printf("Child Complete \n");
+        }
+
+        return 0;
+
+}
+
+
+/*
+microsoft end of file
+dynamically allocated array, not fixed size
+*/
+
+
+/*Check size of file for dynamically allocated array*/
+        int array_size = 50;
+
+        /*create dynamically allocated array*/
+        int *p_array;
+        p_array = (int *)malloc(sizeof(int)*  array_size);    
+
+        /*check if malloc was succesful*/
+        if(p_array == NULL) {
+            printf("Malloc, size = %d failed\n", array_size);
+            exit(1);
+        }
+
+        if( fgets (str, 60, fp)!=NULL ) {
+            /* writing content to stdout */
+            puts(str);
+        }
+
+        free(name of malloc poniter)
+
+https://github.com/kaushtuk/Simple-Shell-Implementation/commit/d682f072251542b85d136ddb3c17a74e13a674bc
